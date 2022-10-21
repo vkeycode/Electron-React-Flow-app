@@ -7,7 +7,6 @@ import ReactFlow, {
   useEdgesState,
   addEdge,
 } from 'reactflow';
-// 👇 you need to import the reactflow styles
 import 'reactflow/dist/style.css';
 import './App.css'
 
@@ -21,25 +20,55 @@ const initialEdges = [{ id: 'e1-2', source: '1', target: '2' }];
 const rfStyle = {
   backgroundColor: 'black',
 };
+
+const initialOptions = {
+  x: "",
+  y: "",
+  width: "",
+  height: "",
+  label: "",
+  background: "",
+  color: "",
+  radius: "",
+  opacity: "",
+}
+
+
 function Flow() {
 
-  // const [newNode, setNewNode] = useState({ id: "", position: { x: "", y: "" }, data: { label: "" }})
-  const [x, setX] = useState()
-  const [y, setY] = useState()
-  const [label, setLabel] = useState()
+  const [options, setOptions] = useState(initialOptions)
 
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
 
+  console.log(options)
   console.log(nodes)
 
   const createNode = (e) => {
     e.preventDefault()
-    if (x && y && label) {
-      setNodes([...nodes, { id: nodes.length + 1 + "", position: { x: x, y: y }, data: { label: label }, width: 150, height: 38 }])
-    } else {
-      alert("need parameter")
-    }
+      setNodes(
+        [...nodes,
+        {
+          id: nodes.length + 1 + "",
+          position: {
+            x: options.x,
+            y: options.y
+          },
+          data: {
+            label: options.label
+          },
+          style: {
+            width: Number(options.width),
+            height: Number(options.height),
+            background: options.background,
+            color: options.color,
+            borderRadius: options.radius,
+            opacity: options.opacity
+          }
+        }
+        ]
+      )
+      // setOptions(initialOptions)
   }
 
 
@@ -60,16 +89,94 @@ function Flow() {
           />
           <Controls />
           <Background />
-
         </ReactFlow>
       </div>
       <div className="options">
         <form className='form'>
           <h2>Create A New Node</h2>
-          <input placeholder='X axis' name="x" onChange={(e) => setX(e.target.value)}></input>
-          <input placeholder='Y axis' name="y" onChange={(e) => setY(e.target.value)} ></input>
-          <input placeholder='Node Label' name="label" onChange={(e) => setLabel(e.target.value)} ></input>
-          <button onClick={createNode} > Create </button>
+          <div className='axis'>
+            <input
+              className='axisInput'
+              placeholder='X axis'
+              name="x"
+              onChange={(e) => setOptions({ ...options, [e.target.name]: e.target.value })}
+              value={options.x}
+            />
+            <input
+              className='axisInput'
+              placeholder='Y axis'
+              name="y"
+              onChange={(e) => setOptions({ ...options, [e.target.name]: e.target.value })}
+              value={options.y}
+            />
+          </div>
+          <div className='dimension'>
+            <input
+              className='dimensionInput'
+              placeholder='Width'
+              name="width"
+              onChange={(e) => setOptions({ ...options, [e.target.name]: e.target.value })}
+              value={options.width}
+            />
+            <input
+              className='dimensionInput'
+              placeholder='Height'
+              name="height"
+              onChange={(e) => setOptions({ ...options, [e.target.name]: e.target.value })}
+              value={options.height}
+            />
+          </div>
+          <input
+            className='label'
+            placeholder='Node Label'
+            name="label"
+            onChange={(e) => setOptions({ ...options, [e.target.name]: e.target.value })}
+            value={options.label}
+          />
+          <div className='color'>
+            <div className='fc'>
+              <label>Font Color</label>
+              <input
+                className='colorInput'
+                name='color'
+                type="color"
+                onChange={(e) => setOptions({ ...options, [e.target.name]: e.target.value })}
+              />
+            </div>
+            <div className='bg'>
+              <label>Background</label>
+              <input
+                className='colorInput'
+                name='background'
+                type="color"
+                onChange={(e) => setOptions({ ...options, [e.target.name]: e.target.value })}
+              />
+            </div>
+          </div>
+          <div className='rd'>
+            <label>Radius<span>{options.radius}</span></label>
+            <input
+              type="range"
+              name='radius'
+              min="0"
+              max="50"
+              onChange={(e) => setOptions({ ...options, [e.target.name]: e.target.value + "%" })}
+            />
+            <label>Opacity<span>{options.opacity}</span></label>
+            <input
+              type="range"
+              name='opacity'
+              min="0"
+              max="1"
+              step="0.1"
+              onChange={(e) => setOptions({ ...options, [e.target.name]: e.target.value })}
+            />
+          </div>
+          <button
+            onClick={createNode}
+          >
+            Create
+          </button>
         </form>
       </div>
     </div>
