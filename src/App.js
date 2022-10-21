@@ -135,7 +135,7 @@ function Flow() {
           />
           <div className='color'>
             <div className='fc'>
-              <label>Font Color</label>
+              <label>Text Color</label>
               <input
                 className='colorInput'
                 name='color'
