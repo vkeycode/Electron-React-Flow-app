@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import ReactFlow, {
   MiniMap,
   Controls,
@@ -27,10 +27,10 @@ const initialOptions = {
   width: "",
   height: "",
   label: "",
-  background: "",
-  color: "",
-  radius: "",
-  opacity: "",
+  background: "#FFFFFF",
+  color: "#000000",
+  radius: "0",
+  opacity: "1",
 }
 
 
@@ -62,13 +62,13 @@ function Flow() {
             height: Number(options.height),
             background: options.background,
             color: options.color,
-            borderRadius: options.radius,
+            borderRadius: options.radius + "%",
             opacity: options.opacity
           }
         }
         ]
       )
-      // setOptions(initialOptions)
+      setOptions(initialOptions)
   }
 
 
@@ -140,6 +140,7 @@ function Flow() {
                 className='colorInput'
                 name='color'
                 type="color"
+                value={options.color}
                 onChange={(e) => setOptions({ ...options, [e.target.name]: e.target.value })}
               />
             </div>
@@ -149,18 +150,20 @@ function Flow() {
                 className='colorInput'
                 name='background'
                 type="color"
+                value={options.background}
                 onChange={(e) => setOptions({ ...options, [e.target.name]: e.target.value })}
               />
             </div>
           </div>
           <div className='rd'>
-            <label>Radius<span>{options.radius}</span></label>
+            <label>Radius<span>{options.radius}%</span></label>
             <input
               type="range"
               name='radius'
               min="0"
               max="50"
-              onChange={(e) => setOptions({ ...options, [e.target.name]: e.target.value + "%" })}
+              value={options.radius}
+              onChange={(e) => setOptions({ ...options, [e.target.name]: e.target.value })}
             />
             <label>Opacity<span>{options.opacity}</span></label>
             <input
@@ -169,6 +172,7 @@ function Flow() {
               min="0"
               max="1"
               step="0.1"
+              value={options.opacity}
               onChange={(e) => setOptions({ ...options, [e.target.name]: e.target.value })}
             />
           </div>
