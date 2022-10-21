@@ -14,7 +14,7 @@
 }
 
 .options {
-  width: 15%;
+  width: 18rem;
   height: 100vh;
   background: rgba(4, 0, 53, 0.521);
   color: aliceblue;
@@ -26,23 +26,19 @@
   height: 50%;
 }
 
-.label {
-  width: 74%;
-  height: 1.5rem;
-  margin-bottom: 7px;
-  background-color: rgba(111, 166, 255, 0.424);
-  outline: none;
-  border: none;
-  text-indent: 10px;
-  border-radius: 5px;
-  color: aliceblue;
-}
+
 .axis {
   display: flex;
   width: 80%;
 }
-.axisInput {
+.contentAx{
   width: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+.axisInput {
+  width: 50px;
   height: 1.5rem;
   margin: 5px ;
   outline: none;
@@ -54,10 +50,29 @@
 }
 .dimension {
   display: flex;
+  justify-content: flex-end;
   width: 80%;
 }
+.lab{
+  width: 80%;
+  display: flex;
+  justify-content:flex-end;
+}
+.label {
+  width:71.5%;
+  height: 1.5rem;
+  margin-left: 10px;
+  margin-right: 5px;
+  margin-bottom: 7px;
+  background-color: rgba(111, 166, 255, 0.424);
+  outline: none;
+  border: none;
+  text-indent: 10px;
+  border-radius: 5px;
+  color: aliceblue;
+}
 .dimensionInput{
-  width: 100%;
+  width: 50px;
   height: 1.5rem;
   margin: 0px 5px 5px;
   outline: none;

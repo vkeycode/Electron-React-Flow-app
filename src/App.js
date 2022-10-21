@@ -1,4 +1,5 @@
-import { useCallback, useEffect, useState } from 'react';
+
+import { useCallback, useState } from 'react';
 import ReactFlow, {
   MiniMap,
   Controls,
@@ -21,7 +22,15 @@ const rfStyle = {
   backgroundColor: 'black',
 };
 
+const defaultParameters = {
+  x: 0,
+  y: 100,
+  width: 150,
+  height: 38,
+}
+
 const initialOptions = {
+  id: "",
   x: "",
   y: "",
   width: "",
@@ -41,36 +50,32 @@ function Flow() {
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
 
-  console.log(options)
-  console.log(nodes)
-
   const createNode = (e) => {
     e.preventDefault()
-      setNodes(
-        [...nodes,
-        {
-          id: nodes.length + 1 + "",
-          position: {
-            x: options.x,
-            y: options.y
-          },
-          data: {
-            label: options.label
-          },
-          style: {
-            width: Number(options.width),
-            height: Number(options.height),
-            background: options.background,
-            color: options.color,
-            borderRadius: options.radius + "%",
-            opacity: options.opacity
-          }
+    setNodes(
+      [...nodes,
+      {
+        id: nodes.length + 1 + "",
+        position: {
+          x: options.x ? options.x : defaultParameters.x,
+          y: options.y ? options.y : defaultParameters.y
+        },
+        data: {
+          label: options.label ? options.label : nodes.length + 1 + ""
+        },
+        style: {
+          width: Number(options.width) ? Number(options.width) : defaultParameters.width ,
+          height: Number(options.height) ? Number(options.height) : defaultParameters.height,
+          background: options.background,
+          color: options.color,
+          borderRadius: options.radius + "px",
+          opacity: options.opacity
         }
-        ]
-      )
-      setOptions(initialOptions)
+      }
+      ]
+    )
+    setOptions(initialOptions)
   }
-
 
   const onConnect = useCallback((params) => setEdges((eds) => addEdge(params, eds)), [setEdges]);
 
@@ -95,47 +100,58 @@ function Flow() {
         <form className='form'>
           <h2>Create A New Node</h2>
           <div className='axis'>
-            <input
-              className='axisInput'
-              placeholder='X axis'
-              name="x"
-              onChange={(e) => setOptions({ ...options, [e.target.name]: e.target.value })}
-              value={options.x}
-            />
-            <input
-              className='axisInput'
-              placeholder='Y axis'
-              name="y"
-              onChange={(e) => setOptions({ ...options, [e.target.name]: e.target.value })}
-              value={options.y}
-            />
+            <div className='contentAx'>
+              <label>X:</label>
+              <input
+                className='axisInput'
+                placeholder='0'
+                name="x"
+                onChange={(e) => setOptions({ ...options, [e.target.name]: e.target.value })}
+                value={options.x}
+              />
+            </div>
+            <div className='contentAx'>
+              <label>Y:</label>
+              <input
+                className='axisInput'
+                placeholder='100'
+                name="y"
+                onChange={(e) => setOptions({ ...options, [e.target.name]: e.target.value })}
+                value={options.y}
+              />
+            </div>
           </div>
           <div className='dimension'>
+            <label>Width:</label>
             <input
               className='dimensionInput'
-              placeholder='Width'
+              placeholder='150'
               name="width"
               onChange={(e) => setOptions({ ...options, [e.target.name]: e.target.value })}
               value={options.width}
             />
+            <label>Height:</label>
             <input
               className='dimensionInput'
-              placeholder='Height'
+              placeholder='38'
               name="height"
               onChange={(e) => setOptions({ ...options, [e.target.name]: e.target.value })}
               value={options.height}
             />
           </div>
-          <input
-            className='label'
-            placeholder='Node Label'
-            name="label"
-            onChange={(e) => setOptions({ ...options, [e.target.name]: e.target.value })}
-            value={options.label}
-          />
+          <div className='lab'>
+            <label>Label:</label>
+            <input
+              className='label'
+              placeholder={nodes.length + 1 + ""}
+              name="label"
+              onChange={(e) => setOptions({ ...options, [e.target.name]: e.target.value })}
+              value={options.label}
+            />
+          </div>
           <div className='color'>
             <div className='fc'>
-              <label>Text Color</label>
+              <label>Text Color:</label>
               <input
                 className='colorInput'
                 name='color'
@@ -145,7 +161,7 @@ function Flow() {
               />
             </div>
             <div className='bg'>
-              <label>Background</label>
+              <label>Background:</label>
               <input
                 className='colorInput'
                 name='background'
@@ -156,7 +172,7 @@ function Flow() {
             </div>
           </div>
           <div className='rd'>
-            <label>Radius<span>{options.radius}%</span></label>
+            <label>Radius:<span>{options.radius}px</span></label>
             <input
               type="range"
               name='radius'
@@ -165,7 +181,7 @@ function Flow() {
               value={options.radius}
               onChange={(e) => setOptions({ ...options, [e.target.name]: e.target.value })}
             />
-            <label>Opacity<span>{options.opacity}</span></label>
+            <label>Opacity:<span>{options.opacity}</span></label>
             <input
               type="range"
               name='opacity'
