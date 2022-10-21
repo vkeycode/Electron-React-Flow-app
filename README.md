@@ -10,7 +10,7 @@ Install Dependencies
 ```
 npm install 
 ```
-Running
+Run Project
 ```
 npm run electron-react
 ```
